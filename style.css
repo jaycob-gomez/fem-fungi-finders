@@ -274,10 +274,7 @@
   }
 
   [aria-controls="primary-nav"] {
-    z-index: 100;
-    background: transparent;
-    border: none;
-    cursor: pointer;
+    display: none;
   }
 
   .primary-navigation {
@@ -288,6 +285,8 @@
     }
 
     @media (width < 760px) {
+      display: none;
+
       position: absolute;
       z-index: 10;
       top: 0;
@@ -309,6 +308,20 @@
         padding-block-start: 1.5rem;
         border-top: 2px solid var(--background-accent-light);
       }
+    }
+  }
+  /* When aria-expanded is true, the direct sibling of the button (navigation) should be displayed */
+  @media (width < 760px) {
+    [aria-expanded="true"] + .primary-navigation {
+      display: block;
+    }
+    /* hamburger menu only shows on smaller screens */
+    [aria-controls="primary-nav"] {
+      display: block;
+      z-index: 100;
+      background: transparent;
+      border: none;
+      cursor: pointer;
     }
   }
 
