@@ -224,14 +224,14 @@
     gap: var(--grid-flow-gap, 1rem);
   }
 
-  .grid-auto-fit {
+  .grid-auto-fill {
     /* Sets the min width for each column */
     --auto-fit-min-col-size: 250px;
     display: grid;
     gap: 1rem;
     /* Fit as many columns of that size unless 100% is smaller */
     grid-template-columns: repeat(
-      auto-fit,
+      auto-fill,
       minmax(min(var(--auto-fit-min-col-size), 100%), 1fr)
     );
   }
@@ -562,6 +562,9 @@
 }
 
 @layer utilities {
+  [hidden] {
+    display: none;
+  }
   .visually-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
