@@ -1,3 +1,8 @@
+/* cross-document view transition */
+@view-transition {
+  navigation: auto;
+}
+
 @layer reset {
   *,
   *::before,
@@ -307,6 +312,10 @@
 
   .site-header {
     padding-block: 1rem;
+
+    /* Removes horizontal overflow on the navigation when it animates */
+    position: relative;
+    overflow-x: clip;
   }
   .site-header__layout {
     display: flex;
@@ -329,6 +338,13 @@
 
     @media (width < 760px) {
       display: none;
+      opacity: 0;
+      transition:
+        opacity 0.3s,
+        display 0.3s,
+        translate 0.3s;
+      transition-behavior: allow-discrete;
+      translate: 100% 0;
 
       position: absolute;
       z-index: 10;
@@ -346,6 +362,22 @@
         flex-direction: column;
       }
 
+      li {
+        --delay: 0.2s;
+        translate: 50%;
+        transition:
+          translate 0.3s var(--delay),
+          opacity 0.3s var(--delay);
+      }
+
+      li:nth-child(2) {
+        --delay: 0.3s;
+      }
+
+      li:nth-child(3) {
+        --delay: 0.4s;
+      }
+
       li + li {
         margin-block-start: 1.5rem;
         padding-block-start: 1.5rem;
@@ -357,6 +389,23 @@
   @media (width < 760px) {
     [aria-expanded="true"] + .primary-navigation {
       display: block;
+      opacity: 1;
+      translate: 0 0;
+
+      @starting-style {
+        opacity: 0;
+        translate: 100% 0;
+      }
+
+      li {
+        translate: 0 0;
+        opacity: 1;
+
+        @starting-style {
+          opacity: 0;
+          translate: 50% 0;
+        }
+      }
     }
     /* hamburger menu only shows on smaller screens */
     [aria-controls="primary-nav"] {
@@ -397,6 +446,10 @@
     color: var(--text-high-contrast);
     background-image: url("/assets/hero.webp");
     background-size: cover;
+
+    animation: fade-out;
+    animation-timeline: view();
+    animation-range-start: exit;
   }
 
   .hero__title {
@@ -565,6 +618,12 @@
   [hidden] {
     display: none;
   }
+
+  .resizing * {
+    transition: none;
+    animation: none;
+  }
+
   .visually-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -620,5 +679,14 @@
   }
   .font-size-lg {
     font-size: var(--font-size-lg);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
